@@ -102,7 +102,7 @@ public sealed partial class SettingsViewModel : ObservableObject
     // Carries the full SemVer including any pre-release suffix (e.g. 0.7.0-dev.1),
     // resolved once by AppVersion.
     public string CurrentVersion => AppVersion.Current;
-    public string CurrentVersionText => $"You're running version {CurrentVersion}.";
+    public string CurrentVersionText => Loc.F("You're running version {0}.", CurrentVersion);
 
     // ===== Update channel (immediate action, not part of the saved form) =====
     // Whether the channel selector is meaningful — only on a Velopack install (hidden
@@ -119,19 +119,18 @@ public sealed partial class SettingsViewModel : ObservableObject
     public string TargetChannel =>
         InstalledChannel == UpdateChannels.Stable ? UpdateChannels.Dev : UpdateChannels.Stable;
 
-    public string SwitchButtonText => $"Switch to {TargetChannel} channel";
-    public string RevertButtonText => $"Stay on {InstalledChannel}";
+    public string SwitchButtonText => Loc.F("Switch to {0} channel", TargetChannel);
+    public string RevertButtonText => Loc.F("Stay on {0}", InstalledChannel);
 
     public string ChannelStatusText
     {
         get
         {
             if (IsChannelSwitchPending)
-                return $"Switching to the {SelectedChannel} channel — use the update banner to " +
-                       "apply it, or revert below.";
+                return Loc.F("Switching to the {0} channel — use the update banner to apply it, or revert below.", SelectedChannel);
             return InstalledChannel == UpdateChannels.Dev
-                ? "You're on the dev channel — new features land here first, but builds may be less stable."
-                : "You're on the stable channel. Switch to dev to get new features early (they may be less stable).";
+                ? Loc.T("You're on the dev channel — new features land here first, but builds may be less stable.")
+                : Loc.T("You're on the stable channel. Switch to dev to get new features early (they may be less stable).");
         }
     }
 
@@ -396,15 +395,15 @@ public sealed partial class SettingsViewModel : ObservableObject
         if (IsCheckingUpdate) return;
 
         IsCheckingUpdate = true;
-        UpdateStatus = "Checking…";
+        UpdateStatus = Loc.T("Checking…");
         try
         {
             UpdateStatus = await _updates.CheckAsync() switch
             {
-                UpdateCheckResult.UpdateAvailable => $"Version {_updates.PendingVersion} is available — use the banner to install it.",
-                UpdateCheckResult.UpToDate        => "You're on the latest version.",
-                UpdateCheckResult.Failed          => "Couldn't check for updates. Please try again later.",
-                _                                 => "Automatic updates aren't available in this build.",
+                UpdateCheckResult.UpdateAvailable => Loc.F("Version {0} is available — use the banner to install it.", _updates.PendingVersion),
+                UpdateCheckResult.UpToDate        => Loc.T("You're on the latest version."),
+                UpdateCheckResult.Failed          => Loc.T("Couldn't check for updates. Please try again later."),
+                _                                 => Loc.T("Automatic updates aren't available in this build."),
             };
         }
         finally
@@ -422,13 +421,13 @@ public sealed partial class SettingsViewModel : ObservableObject
         if (IsCheckingUpdate) return;
 
         IsCheckingUpdate = true;
-        UpdateStatus = "Checking…";
+        UpdateStatus = Loc.T("Checking…");
         try
         {
             await _updates.SetChannelAsync(channel);
             UpdateStatus = _updates.IsUpdatePending
-                ? $"Version {_updates.PendingVersion} is available on the {channel} channel — use the banner to install it."
-                : $"You're on the latest {channel} version.";
+                ? Loc.F("Version {0} is available on the {1} channel — use the banner to install it.", _updates.PendingVersion, channel)
+                : Loc.F("You're on the latest {0} version.", channel);
         }
         finally
         {

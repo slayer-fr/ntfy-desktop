@@ -47,7 +47,7 @@ public partial class SettingsPage : Page
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Unexpected error: " + ex.Message);
+            MessageBox.Show(Loc.T("Unexpected error: ") + ex.Message);
         }
     }
 
@@ -59,7 +59,7 @@ public partial class SettingsPage : Page
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Unexpected error: " + ex.Message);
+            MessageBox.Show(Loc.T("Unexpected error: ") + ex.Message);
         }
     }
 
@@ -74,17 +74,15 @@ public partial class SettingsPage : Page
         // Opting into dev warns about stability; going to stable warns it may move you
         // to an earlier (downgrade) build, since the latest stable can trail the dev build.
         var content = target == UpdateChannels.Dev
-            ? "Dev builds get new features early but can be less stable. You'll get the latest " +
-              "dev build the next time you update.\n\nSwitch to the dev channel?"
-            : "The stable channel may be an earlier version than your current dev build, so the " +
-              "next update can move you to an older but more stable release.\n\nSwitch to the stable channel?";
+            ? Loc.T("Dev builds get new features early but can be less stable. You'll get the latest dev build the next time you update.\n\nSwitch to the dev channel?")
+            : Loc.T("The stable channel may be an earlier version than your current dev build, so the next update can move you to an older but more stable release.\n\nSwitch to the stable channel?");
 
         var dialog = new Wpf.Ui.Controls.MessageBox
         {
-            Title = $"Switch to {target} channel",
+            Title = Loc.F("Switch to {0} channel", target),
             Content = content,
-            PrimaryButtonText = $"Switch to {target}",
-            CloseButtonText = "Cancel",
+            PrimaryButtonText = Loc.F("Switch to {0}", target),
+            CloseButtonText = Loc.T("Cancel"),
         };
 
         if (await dialog.ShowDialogAsync() != Wpf.Ui.Controls.MessageBoxResult.Primary) return;
@@ -95,7 +93,7 @@ public partial class SettingsPage : Page
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Unexpected error: " + ex.Message);
+            MessageBox.Show(Loc.T("Unexpected error: ") + ex.Message);
         }
     }
 
@@ -109,7 +107,7 @@ public partial class SettingsPage : Page
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Unexpected error: " + ex.Message);
+            MessageBox.Show(Loc.T("Unexpected error: ") + ex.Message);
         }
     }
 
@@ -125,7 +123,7 @@ public partial class SettingsPage : Page
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Unexpected error: " + ex.Message);
+            MessageBox.Show(Loc.T("Unexpected error: ") + ex.Message);
         }
     }
 
@@ -140,7 +138,7 @@ public partial class SettingsPage : Page
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Unexpected error: " + ex.Message);
+            MessageBox.Show(Loc.T("Unexpected error: ") + ex.Message);
         }
     }
 
@@ -154,8 +152,8 @@ public partial class SettingsPage : Page
         {
             var info = new Wpf.Ui.Controls.MessageBox
             {
-                Title = "Remove server",
-                Content = "You must keep at least one server.",
+                Title = Loc.T("Remove server"),
+                Content = Loc.T("You must keep at least one server."),
                 CloseButtonText = "OK",
             };
             await info.ShowDialogAsync();
@@ -171,12 +169,11 @@ public partial class SettingsPage : Page
             // Three-way: keep history, delete history, or cancel.
             var dialog = new Wpf.Ui.Controls.MessageBox
             {
-                Title = "Remove server",
-                Content = $"Remove “{server.DisplayLabel}” and its {topicCount} topic(s)?\n\n" +
-                          "Keep their message history (still browsable under “All topics”), or delete it too?",
-                PrimaryButtonText = "Keep history",
-                SecondaryButtonText = "Delete history",
-                CloseButtonText = "Cancel",
+                Title = Loc.T("Remove server"),
+                Content = Loc.F("Remove “{0}” and its {1} topic(s)?\n\nKeep their message history (still browsable under “All topics”), or delete it too?", server.DisplayLabel, topicCount),
+                PrimaryButtonText = Loc.T("Keep history"),
+                SecondaryButtonText = Loc.T("Delete history"),
+                CloseButtonText = Loc.T("Cancel"),
             };
 
             var result = await dialog.ShowDialogAsync();
@@ -192,10 +189,10 @@ public partial class SettingsPage : Page
             // No topics → no history to worry about.
             var confirm = new Wpf.Ui.Controls.MessageBox
             {
-                Title = "Remove server",
-                Content = $"Remove “{server.DisplayLabel}”?",
-                PrimaryButtonText = "Remove",
-                CloseButtonText = "Cancel",
+                Title = Loc.T("Remove server"),
+                Content = Loc.F("Remove “{0}”?", server.DisplayLabel),
+                PrimaryButtonText = Loc.T("Remove"),
+                CloseButtonText = Loc.T("Cancel"),
             };
             if (await confirm.ShowDialogAsync() != Wpf.Ui.Controls.MessageBoxResult.Primary) return;
             deleteHistory = false;
@@ -207,7 +204,7 @@ public partial class SettingsPage : Page
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Unexpected error: " + ex.Message);
+            MessageBox.Show(Loc.T("Unexpected error: ") + ex.Message);
         }
     }
 }
