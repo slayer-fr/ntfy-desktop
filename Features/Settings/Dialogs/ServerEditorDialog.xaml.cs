@@ -15,7 +15,7 @@ public partial class ServerEditorDialog : FluentWindow
         InitializeComponent();
         _vm = ServerEditorViewModel.FromServer(existing);
         DataContext = _vm;
-        Title = existing is null ? "Add server" : "Edit server";
+        Title = Loc.T(existing is null ? "Add server" : "Edit server");
 
         // PasswordBox.Password isn't bindable; pump both secret fields in manually.
         _suspendSecretSync = true;
@@ -46,7 +46,7 @@ public partial class ServerEditorDialog : FluentWindow
     {
         if (_vm.HasUrlError)
         {
-            System.Windows.MessageBox.Show(this, _vm.UrlError, "Validation",
+            System.Windows.MessageBox.Show(this, _vm.UrlError, Loc.T("Validation"),
                 System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
             return;
         }

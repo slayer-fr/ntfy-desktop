@@ -53,8 +53,8 @@ public sealed partial class ServerEditorViewModel : ObservableObject
         get
         {
             var s = Url?.Trim() ?? string.Empty;
-            if (string.IsNullOrWhiteSpace(s))                     return "Server URL is required.";
-            if (!Uri.TryCreate(s, UriKind.Absolute, out var uri)) return "Not a valid URL.";
+            if (string.IsNullOrWhiteSpace(s))                     return Loc.T("Server URL is required.");
+            if (!Uri.TryCreate(s, UriKind.Absolute, out var uri)) return Loc.T("Not a valid URL.");
             if (uri.Scheme != "http" && uri.Scheme != "https")    return "URL must use http or https.";
             return null;
         }
