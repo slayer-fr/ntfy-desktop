@@ -47,12 +47,12 @@ public sealed partial class FeedViewModel : ObservableObject
     public ObservableCollection<HistoryMessage> Messages { get; } = [];
 
     public string Title =>
-        CurrentTopicId is null ? "All topics" : TopicName() ?? "Topic";
+        CurrentTopicId is null ? Loc.T("All topics") : TopicName() ?? Loc.T("Topic");
 
     public string Subtitle =>
         CurrentTopicId is null
-            ? "Messages from every subscribed topic."
-            : $"Messages from {TopicName() ?? "this topic"}.";
+            ? Loc.T("Messages from every subscribed topic.")
+            : Loc.F("Messages from {0}.", TopicName() ?? Loc.T("this topic"));
 
     private string? TopicName() =>
         CurrentTopicId is { } id ? _settings.GetTopicById(id)?.EffectiveDisplayName : null;

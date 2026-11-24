@@ -52,10 +52,10 @@ public sealed class MessageActionInvoker
         // do anything. Only proceed on explicit confirmation.
         var confirm = new Wpf.Ui.Controls.MessageBox
         {
-            Title = "Run action?",
-            Content = $"This will send a request:\n\n{action.EffectiveMethod} {action.Url}\n\nProceed?",
-            PrimaryButtonText = "Send",
-            CloseButtonText = "Cancel",
+            Title = Loc.T("Run action?"),
+            Content = Loc.F("This will send a request:\n\n{0} {1}\n\nProceed?", action.EffectiveMethod, action.Url),
+            PrimaryButtonText = Loc.T("Send"),
+            CloseButtonText = Loc.T("Cancel"),
         };
 
         if (await confirm.ShowDialogAsync() != Wpf.Ui.Controls.MessageBoxResult.Primary)
@@ -81,8 +81,8 @@ public sealed class MessageActionInvoker
         {
             var error = new Wpf.Ui.Controls.MessageBox
             {
-                Title = "Action failed",
-                Content = $"The request could not be sent:\n\n{ex.Message}",
+                Title = Loc.T("Action failed"),
+                Content = Loc.F("The request could not be sent:\n\n{0}", ex.Message),
                 CloseButtonText = "OK",
             };
             await error.ShowDialogAsync();
