@@ -72,7 +72,7 @@ public sealed partial class DraftRulesViewModel(
     public void Initialize(Guid? topicId)
     {
         Topics.Clear();
-        Topics.Add(new TopicChoice(null, "All topics"));
+        Topics.Add(new TopicChoice(null, Loc.T("All topics")));
         foreach (var t in settings.Topics)
             Topics.Add(new TopicChoice(t.Id, t.EffectiveDisplayName));
 
@@ -133,7 +133,7 @@ public sealed partial class DraftRulesViewModel(
         var samples = GatherSamples();
         if (samples.Count == 0)
         {
-            ErrorText = "Select at least one sample message (or paste some).";
+            ErrorText = Loc.T("Select at least one sample message (or paste some).");
             return;
         }
 
@@ -145,7 +145,7 @@ public sealed partial class DraftRulesViewModel(
             var result = await draft.DraftAsync(samples, Intent, model, CancellationToken.None);
             if (!result.Ok)
             {
-                ErrorText = result.Error ?? "Couldn't draft a pack.";
+                ErrorText = result.Error ?? Loc.T("Couldn't draft a pack.");
                 return; // stay on the input step
             }
 
@@ -196,7 +196,7 @@ public sealed partial class DraftRulesViewModel(
     {
         if (string.IsNullOrWhiteSpace(DraftJson))
         {
-            ErrorText = "Nothing to save — generate a pack first.";
+            ErrorText = Loc.T("Nothing to save — generate a pack first.");
             return false;
         }
 
