@@ -46,9 +46,9 @@ public sealed class TopicConnectionRow
 
     public string StatusText => ConnectionStatus switch
     {
-        TopicConnectionStatus.Connected    => "Connected",
-        TopicConnectionStatus.Connecting   => "Connecting…",
-        TopicConnectionStatus.Disconnected => "Disconnected",
+        TopicConnectionStatus.Connected    => Loc.T("Connected"),
+        TopicConnectionStatus.Connecting   => Loc.T("Connecting…"),
+        TopicConnectionStatus.Disconnected => Loc.T("Disconnected"),
         _ => "—",
     };
 
