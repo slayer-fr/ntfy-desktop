@@ -683,7 +683,7 @@ public partial class MainWindow
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Unexpected error: " + ex.Message);
+            MessageBox.Show(Loc.T("Unexpected error: ") + ex.Message);
         }
     }
 
@@ -691,10 +691,10 @@ public partial class MainWindow
     {
         var box = new Wpf.Ui.Controls.MessageBox
         {
-            Title = "Server not configured",
-            Content = "Set a valid server URL in Settings before adding topics.",
-            PrimaryButtonText = "Open Settings",
-            CloseButtonText = "Cancel"
+            Title = Loc.T("Server not configured"),
+            Content = Loc.T("Set a valid server URL in Settings before adding topics."),
+            PrimaryButtonText = Loc.T("Open Settings"),
+            CloseButtonText = Loc.T("Cancel")
         };
 
         var result = await box.ShowDialogAsync();
@@ -724,7 +724,7 @@ public partial class MainWindow
 
         var markAllRead = new System.Windows.Controls.MenuItem
         {
-            Header = "Mark all read",
+            Header = Loc.T("Mark all read"),
             Icon = new SymbolIcon { Symbol = SymbolRegular.Checkmark24, FontSize = 14 },
             IsEnabled = _unread.Total > 0,
         };
@@ -746,7 +746,7 @@ public partial class MainWindow
         // paused — the global flag overrides per-topic state.
         var pauseItem = new System.Windows.Controls.MenuItem
         {
-            Header = isTopicSpecificallyPaused ? "Resume notifications" : "Pause notifications",
+            Header = Loc.T(isTopicSpecificallyPaused ? "Resume notifications" : "Pause notifications"),
             Icon = new SymbolIcon
             {
                 Symbol = isTopicSpecificallyPaused ? SymbolRegular.Play24 : SymbolRegular.Pause24,
@@ -755,7 +755,7 @@ public partial class MainWindow
             },
             IsEnabled = !globallyPaused,
             ToolTip = globallyPaused
-                ? "Notifications are paused globally — use the title-bar Resume button."
+                ? Loc.T("Notifications are paused globally — use the title-bar Resume button.")
                 : null,
         };
         pauseItem.Click += (_, _) =>
@@ -768,7 +768,7 @@ public partial class MainWindow
         // there's no live socket to reconnect).
         var reconnectItem = new System.Windows.Controls.MenuItem
         {
-            Header = "Reconnect",
+            Header = Loc.T("Reconnect"),
             Icon = new SymbolIcon { Symbol = SymbolRegular.ArrowSync24, FontSize = 14 },
             IsEnabled = isEnabled,
         };
@@ -778,7 +778,7 @@ public partial class MainWindow
         // it back up. Same persistence path as the editor dialog.
         var enableItem = new System.Windows.Controls.MenuItem
         {
-            Header = isEnabled ? "Disable" : "Enable",
+            Header = Loc.T(isEnabled ? "Disable" : "Enable"),
             Icon = new SymbolIcon
             {
                 Symbol = isEnabled ? SymbolRegular.Prohibited24 : SymbolRegular.CheckmarkCircle24,
@@ -790,7 +790,7 @@ public partial class MainWindow
         // Mark this topic's messages read. Disabled when it has no unread.
         var markReadItem = new System.Windows.Controls.MenuItem
         {
-            Header = "Mark as read",
+            Header = Loc.T("Mark as read"),
             Icon = new SymbolIcon { Symbol = SymbolRegular.Checkmark24, FontSize = 14 },
             IsEnabled = _unread.CountFor(topicId) > 0,
         };
@@ -811,13 +811,13 @@ public partial class MainWindow
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Unexpected error: " + ex.Message);
+                MessageBox.Show(Loc.T("Unexpected error: ") + ex.Message);
             }
         };
 
         var draftRulesItem = new System.Windows.Controls.MenuItem
         {
-            Header = "Draft rules from this topic…",
+            Header = Loc.T("Draft rules from this topic…"),
             Icon = new SymbolIcon { Symbol = SymbolRegular.Sparkle24, FontSize = 14 },
         };
         draftRulesItem.Click += (_, _) =>
@@ -830,13 +830,13 @@ public partial class MainWindow
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Unexpected error: " + ex.Message);
+                MessageBox.Show(Loc.T("Unexpected error: ") + ex.Message);
             }
         };
 
         var moveUp = new System.Windows.Controls.MenuItem
         {
-            Header = "Move up",
+            Header = Loc.T("Move up"),
             Icon = new SymbolIcon { Symbol = SymbolRegular.ArrowUp24, FontSize = 14 },
             IsEnabled = _topics.Arrangement.CanMoveTopicWithinGroup(topic, -1),
         };
@@ -844,7 +844,7 @@ public partial class MainWindow
 
         var moveDown = new System.Windows.Controls.MenuItem
         {
-            Header = "Move down",
+            Header = Loc.T("Move down"),
             Icon = new SymbolIcon { Symbol = SymbolRegular.ArrowDown24, FontSize = 14 },
             IsEnabled = _topics.Arrangement.CanMoveTopicWithinGroup(topic, +1),
         };
@@ -854,7 +854,7 @@ public partial class MainWindow
 
         var removeItem = new System.Windows.Controls.MenuItem
         {
-            Header = "Remove",
+            Header = Loc.T("Remove"),
             Icon = new SymbolIcon { Symbol = SymbolRegular.Delete24, FontSize = 14 },
         };
         removeItem.Click += async (_, _) => await RemoveTopicWithPromptAsync(topic);
@@ -886,7 +886,7 @@ public partial class MainWindow
 
         var root = new System.Windows.Controls.MenuItem
         {
-            Header = "Move to group",
+            Header = Loc.T("Move to group"),
             Icon = new SymbolIcon { Symbol = SymbolRegular.FolderArrowRight24, FontSize = 14 },
         };
 
@@ -906,7 +906,7 @@ public partial class MainWindow
 
         var ungrouped = new System.Windows.Controls.MenuItem
         {
-            Header = "Ungrouped",
+            Header = Loc.T("Ungrouped"),
             IsChecked = current.Length == 0,
         };
         ungrouped.Click += (_, _) => _topics.Arrangement.MoveTopicToGroup(topic, null);
@@ -922,7 +922,7 @@ public partial class MainWindow
 
         var up = new System.Windows.Controls.MenuItem
         {
-            Header = "Move up",
+            Header = Loc.T("Move up"),
             Icon = new SymbolIcon { Symbol = SymbolRegular.ArrowUp24, FontSize = 14 },
             IsEnabled = _topics.Arrangement.CanMoveGroup(groupName, -1),
         };
@@ -930,7 +930,7 @@ public partial class MainWindow
 
         var down = new System.Windows.Controls.MenuItem
         {
-            Header = "Move down",
+            Header = Loc.T("Move down"),
             Icon = new SymbolIcon { Symbol = SymbolRegular.ArrowDown24, FontSize = 14 },
             IsEnabled = _topics.Arrangement.CanMoveGroup(groupName, +1),
         };
@@ -947,12 +947,11 @@ public partial class MainWindow
     {
         var dialog = new Wpf.Ui.Controls.MessageBox
         {
-            Title = "Remove topic",
-            Content = $"Remove “{topic.EffectiveDisplayName}”?\n\n" +
-                      "Keep its message history (still browsable under “All topics”), or delete it too?",
-            PrimaryButtonText = "Keep history",
-            SecondaryButtonText = "Delete history",
-            CloseButtonText = "Cancel",
+            Title = Loc.T("Remove topic"),
+            Content = Loc.F("Remove “{0}”?\n\nKeep its message history (still browsable under “All topics”), or delete it too?", topic.EffectiveDisplayName),
+            PrimaryButtonText = Loc.T("Keep history"),
+            SecondaryButtonText = Loc.T("Delete history"),
+            CloseButtonText = Loc.T("Cancel"),
         };
 
         bool deleteHistory;
@@ -1085,11 +1084,11 @@ public partial class MainWindow
     {
         var dialog = new Wpf.Ui.Controls.MessageBox
         {
-            Title = "Unsaved changes",
-            Content = "You have unsaved changes in Settings. Save them, discard them, or stay on the page?",
-            PrimaryButtonText = "Save",
-            SecondaryButtonText = "Discard",
-            CloseButtonText = "Cancel",
+            Title = Loc.T("Unsaved changes"),
+            Content = Loc.T("You have unsaved changes in Settings. Save them, discard them, or stay on the page?"),
+            PrimaryButtonText = Loc.T("Save"),
+            SecondaryButtonText = Loc.T("Discard"),
+            CloseButtonText = Loc.T("Cancel"),
         };
 
         var result = await dialog.ShowDialogAsync();

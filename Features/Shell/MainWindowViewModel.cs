@@ -23,14 +23,14 @@ public sealed partial class MainWindowViewModel : ObservableObject
     private ConnectionStatus _connectionStatus;
 
     [ObservableProperty]
-    private string _connectionStatusText = "Connecting…";
+    private string _connectionStatusText = Loc.T("Connecting…");
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(PauseButtonLabel))]
     [NotifyPropertyChangedFor(nameof(ShowPauseButton))]
     private bool _isGloballyPaused;
 
-    public string PauseButtonLabel => IsGloballyPaused ? "Resume notifications" : "Pause notifications";
+    public string PauseButtonLabel => IsGloballyPaused ? Loc.T("Resume notifications") : Loc.T("Pause notifications");
 
     // When paused, the banner takes over as the resume entry point — the
     // title-bar button is hidden to avoid two redundant controls.
@@ -61,14 +61,14 @@ public sealed partial class MainWindowViewModel : ObservableObject
     private int _downloadProgress;
 
     public string UpdateBannerText =>
-        UpdateVersion.Length > 0 ? $"Version {UpdateVersion} is available" : "An update is available";
+        UpdateVersion.Length > 0 ? Loc.F("Version {0} is available", UpdateVersion) : Loc.T("An update is available");
 
     // While downloading, show live progress; otherwise the standing explanation.
     public string UpdateBannerSubtext => IsApplyingUpdate
-        ? $"Downloading… {DownloadProgress}%"
-        : "The update downloads in the background, then the app restarts to finish.";
+        ? Loc.F("Downloading… {0}%", DownloadProgress)
+        : Loc.T("The update downloads in the background, then the app restarts to finish.");
 
-    public string UpdateButtonLabel => IsApplyingUpdate ? "Updating…" : "Restart & update";
+    public string UpdateButtonLabel => IsApplyingUpdate ? Loc.T("Updating…") : Loc.T("Restart & update");
 
     public bool CanApplyUpdate => !IsApplyingUpdate;
 
@@ -136,9 +136,9 @@ public sealed partial class MainWindowViewModel : ObservableObject
         ConnectionStatus = _connections.GetConnectionStatus();
         ConnectionStatusText = ConnectionStatus switch
         {
-            ConnectionStatus.Connected    => "Connected",
-            ConnectionStatus.Degraded     => "Reconnecting…",
-            ConnectionStatus.Disconnected => "Disconnected",
+            ConnectionStatus.Connected    => Loc.T("Connected"),
+            ConnectionStatus.Degraded     => Loc.T("Reconnecting…"),
+            ConnectionStatus.Disconnected => Loc.T("Disconnected"),
             _                             => "—",
         };
         IsGloballyPaused = _gate.IsGloballyPaused;

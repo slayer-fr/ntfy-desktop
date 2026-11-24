@@ -29,7 +29,7 @@ internal sealed class TrayIconHost : IDisposable
     {
         _pauseItem = new MenuItem
         {
-            Header = "Pause notifications",
+            Header = Loc.T("Pause notifications"),
             Command = new RelayCommand(app.TogglePause),
         };
 
@@ -70,9 +70,9 @@ internal sealed class TrayIconHost : IDisposable
     {
         var (file, connectionWord) = _lastConnection switch
         {
-            ConnectionStatus.Connected    => ("tray-connected.ico",    "connected"),
-            ConnectionStatus.Degraded     => ("tray-degraded.ico",     "reconnecting"),
-            ConnectionStatus.Disconnected => ("tray-disconnected.ico", "disconnected"),
+            ConnectionStatus.Connected    => ("tray-connected.ico",    Loc.T("connected")),
+            ConnectionStatus.Degraded     => ("tray-degraded.ico",     Loc.T("reconnecting")),
+            ConnectionStatus.Disconnected => ("tray-disconnected.ico", Loc.T("disconnected")),
             _                             => ("tray-disconnected.ico", "—"),
         };
 
@@ -82,14 +82,14 @@ internal sealed class TrayIconHost : IDisposable
         _activeIcon?.Dispose();
         _activeIcon = fresh;
 
-        var unreadWord = _lastUnread > 0 ? $", {_lastUnread} unread" : string.Empty;
+        var unreadWord = _lastUnread > 0 ? Loc.F(", {0} unread", _lastUnread) : string.Empty;
         _icon.ToolTipText = _lastNotifications == NotificationStatus.Paused
-            ? $"{App.NAME} — {connectionWord}, notifications paused{unreadWord}"
+            ? $"{App.NAME} — {connectionWord}{Loc.T(", notifications paused")}{unreadWord}"
             : $"{App.NAME} — {connectionWord}{unreadWord}";
 
         _pauseItem.Header = _lastNotifications == NotificationStatus.Paused
-            ? "Resume notifications"
-            : "Pause notifications";
+            ? Loc.T("Resume notifications")
+            : Loc.T("Pause notifications");
     }
 
     private static System.Drawing.Icon LoadIcon(string fileName)
@@ -103,18 +103,18 @@ internal sealed class TrayIconHost : IDisposable
     private static ContextMenu BuildContextMenu(App app, MenuItem pauseItem)
     {
         var menu = new ContextMenu();
-        menu.Items.Add(new MenuItem { Header = "Show", Command = new RelayCommand(app.ShowMainWindow) });
+        menu.Items.Add(new MenuItem { Header = Loc.T("Show"), Command = new RelayCommand(app.ShowMainWindow) });
         menu.Items.Add(new Separator());
         menu.Items.Add(pauseItem);
         menu.Items.Add(new Separator());
-        menu.Items.Add(new MenuItem { Header = "Disconnect all", Command = new RelayCommand(app.DisconnectAllConnections) });
-        menu.Items.Add(new MenuItem { Header = "Reconnect all",  Command = new RelayCommand(app.ReconnectAllConnections) });
+        menu.Items.Add(new MenuItem { Header = Loc.T("Disconnect all"), Command = new RelayCommand(app.DisconnectAllConnections) });
+        menu.Items.Add(new MenuItem { Header = Loc.T("Reconnect all"),  Command = new RelayCommand(app.ReconnectAllConnections) });
 
         // Manual update check — only when auto-update is operative (a Velopack install).
         if (app.UpdatesSupported)
         {
             menu.Items.Add(new Separator());
-            menu.Items.Add(new MenuItem { Header = "Check for updates", Command = new RelayCommand(app.CheckForUpdates) });
+            menu.Items.Add(new MenuItem { Header = Loc.T("Check for updates"), Command = new RelayCommand(app.CheckForUpdates) });
         }
 
         menu.Items.Add(new Separator());
