@@ -390,5 +390,12 @@ public static partial class Loc
         ["disconnected"] = "déconnecté",
         [", {0} unread"] = ", {0} non lu(s)",
         [", notifications paused"] = ", notifications suspendues",
+
+        // ---- Relative time ----
+        ["just now"] = "à l'instant",
+        ["{0}m ago"] = "il y a {0} min",
+        ["{0}h ago"] = "il y a {0} h",
+        ["yesterday"] = "hier",
+        ["{0}d ago"] = "il y a {0} j",
     };
 }
