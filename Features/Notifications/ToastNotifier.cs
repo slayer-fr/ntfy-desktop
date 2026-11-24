@@ -123,18 +123,18 @@ public class ToastNotifier
     public void ShowUpdateAvailable(string version)
     {
         var body = string.IsNullOrEmpty(version)
-            ? "A new version is ready. Open ntfy Desktop to install it."
-            : $"Version {version} is ready. Open ntfy Desktop to install it.";
-        ShowAppToast("Update available", body, $"{ProtocolRegistration.SCHEME}://update");
+            ? Loc.T("A new version is ready. Open ntfy Desktop to install it.")
+            : Loc.F("Version {0} is ready. Open ntfy Desktop to install it.", version);
+        ShowAppToast(Loc.T("Update available"), body, $"{ProtocolRegistration.SCHEME}://update");
     }
 
     /// <summary>Feedback for a manual check that found nothing newer.</summary>
     public void ShowUpToDate() =>
-        ShowAppToast("You're up to date", "ntfy Desktop is running the latest version.", launchUrl: null);
+        ShowAppToast(Loc.T("You're up to date"), Loc.T("ntfy Desktop is running the latest version."), launchUrl: null);
 
     /// <summary>Feedback for a manual check that couldn't reach GitHub.</summary>
     public void ShowUpdateCheckFailed() =>
-        ShowAppToast("Couldn't check for updates", "Please try again later.", launchUrl: null);
+        ShowAppToast(Loc.T("Couldn't check for updates"), Loc.T("Please try again later."), launchUrl: null);
 
     private void ShowAppToast(string title, string body, string? launchUrl)
     {
@@ -166,15 +166,15 @@ public class ToastNotifier
 
     private static (string Title, string Body) FormatSummary(int total, IReadOnlyList<(string Label, int Count)> topics)
     {
-        var title = $"{total} {(total == 1 ? "message" : "messages")} while you were away";
+        var title = Loc.F(total == 1 ? "{0} message while you were away" : "{0} messages while you were away", total);
 
         if (topics.Count == 1)
-            return (title, $"in {topics[0].Label}");
+            return (title, Loc.F("in {0}", topics[0].Label));
 
         const int max = 4;
         var body = string.Join(", ", topics.Take(max).Select(t => $"{t.Label} ({t.Count})"));
         if (topics.Count > max)
-            body += $", +{topics.Count - max} more";
+            body += Loc.F(", +{0} more", topics.Count - max);
 
         return (title, body);
     }
@@ -248,7 +248,7 @@ public class ToastNotifier
                 ? $"{ProtocolRegistration.SCHEME}://view?url={Uri.EscapeDataString(action.Url!)}"
                 : $"{ProtocolRegistration.SCHEME}://action?msg={Uri.EscapeDataString(messageId)}&i={i}";
 
-            var label = string.IsNullOrWhiteSpace(action.Label) ? "Open" : action.Label;
+            var label = string.IsNullOrWhiteSpace(action.Label) ? Loc.T("Open") : action.Label;
 
             buttons.Add(
                 $"""<action content="{EscapeXml(label)}" activationType="protocol" arguments="{EscapeXml(arguments)}" />""");
@@ -259,10 +259,10 @@ public class ToastNotifier
 
     private static string FormatAttribution(string topic, Priority priority) => priority switch
     {
-        Priority.Urgent => $"🔴 Urgent · {topic}",
-        Priority.High   => $"🟠 High · {topic}",
-        Priority.Low    => $"🔵 Low · {topic}",
-        Priority.Min    => $"⚪ Min · {topic}",
+        Priority.Urgent => Loc.F("🔴 Urgent · {0}", topic),
+        Priority.High   => Loc.F("🟠 High · {0}", topic),
+        Priority.Low    => Loc.F("🔵 Low · {0}", topic),
+        Priority.Min    => Loc.F("⚪ Min · {0}", topic),
         _               => topic, // Default: no prefix
     };
 
