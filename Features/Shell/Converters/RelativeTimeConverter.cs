@@ -12,13 +12,13 @@ public sealed class RelativeTimeConverter : IValueConverter
 
         var delta = DateTimeOffset.Now - ts;
 
-        if (delta.TotalSeconds < 60) return "just now";
-        if (delta.TotalMinutes < 60) return $"{(int)delta.TotalMinutes}m ago";
-        if (delta.TotalHours < 24)   return $"{(int)delta.TotalHours}h ago";
-        if (delta.TotalDays < 2)     return "yesterday";
-        if (delta.TotalDays < 7)     return $"{(int)delta.TotalDays}d ago";
+        if (delta.TotalSeconds < 60) return Loc.T("just now");
+        if (delta.TotalMinutes < 60) return Loc.F("{0}m ago", (int)delta.TotalMinutes);
+        if (delta.TotalHours < 24)   return Loc.F("{0}h ago", (int)delta.TotalHours);
+        if (delta.TotalDays < 2)     return Loc.T("yesterday");
+        if (delta.TotalDays < 7)     return Loc.F("{0}d ago", (int)delta.TotalDays);
 
-        return ts.LocalDateTime.ToString("MMM d, yyyy", culture);
+        return ts.LocalDateTime.ToString(Loc.IsFrench ? "d MMM yyyy" : "MMM d, yyyy", Loc.IsFrench ? CultureInfo.CurrentCulture : culture);
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
