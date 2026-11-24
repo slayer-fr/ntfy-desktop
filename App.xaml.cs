@@ -58,6 +58,7 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        Loc.Install();
 
         // --data-path <dir> or --data-path=<dir>: override the default data folder.
         // Must be set before anything else so AppSettings + HistoryRepository pick it up.
