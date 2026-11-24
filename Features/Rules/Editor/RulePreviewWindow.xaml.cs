@@ -23,7 +23,7 @@ public partial class RulePreviewWindow
             : $"“{packName}” would affect {rows.Count} message(s): {hidden} hidden" +
               (folded > 0 ? $", {folded} folded with their problem" : "") +
               (report.Absences.Count > 0 ? $", {report.Absences.Count} heartbeat gap(s)" : "") + ".";
-        ScopeText.Text = $"Tested against {report.Results.Count} stored message(s) — {scopeLabel}.";
+        ScopeText.Text = Loc.F("Tested against {0} stored message(s) — {1}.", report.Results.Count, scopeLabel);
 
         EmptyText.Visibility = rows.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         RowList.Visibility = rows.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
@@ -47,22 +47,22 @@ public partial class RulePreviewWindow
 
             if (r.DismissMessageId is not null)
             {
-                effect = "Folds (resolved)";
+                effect = Loc.T("Folds (resolved)");
                 brush = Resolve("SystemFillColorCautionBrush", Brushes.DarkOrange);
             }
             else if (r.Hidden)
             {
-                effect = "Hidden";
+                effect = Loc.T("Hidden");
                 brush = Resolve("SystemFillColorCautionBrush", Brushes.DarkOrange);
             }
             else if (r.OpensIncident)
             {
-                effect = "Opens incident";
+                effect = Loc.T("Opens incident");
                 brush = Resolve("AccentFillColorDefaultBrush", Brushes.SteelBlue);
             }
             else if (r.Tags.Count > 0)
             {
-                effect = "Tagged: " + string.Join(", ", r.Tags);
+                effect = Loc.T("Tagged: ") + string.Join(", ", r.Tags);
                 brush = Resolve("SystemFillColorSuccessBrush", Brushes.SeaGreen);
             }
 

@@ -63,7 +63,7 @@ public sealed partial class RulePackManagerViewModel : ObservableObject
         SelectedPack = Packs.FirstOrDefault();
 
         Topics.Clear();
-        Topics.Add(new TopicScope(null, "All topics"));
+        Topics.Add(new TopicScope(null, Loc.T("All topics")));
         TopicOptions.Clear();
         TopicOptions.Add(new TopicOption("", "(any topic)"));
         foreach (var t in _topics())
@@ -129,7 +129,7 @@ public sealed partial class RulePackManagerViewModel : ObservableObject
             else p.FilePath = _store.Save(p.Name, json);
         }
         ErrorText = "";
-        FlashStatus($"All changes saved ({Packs.Count} pack(s)).");
+        FlashStatus(Loc.F("All changes saved ({0} pack(s)).", Packs.Count));
         return true;
     }
 

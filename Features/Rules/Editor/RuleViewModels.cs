@@ -182,7 +182,7 @@ public sealed partial class ExpectRuleViewModel : RuleViewModel
         if (!When.TryValidate(out error)) return false;
         if (EveryAmount <= 0) { error = "‘Every’ must be greater than zero."; return false; }
         if (GraceAmount < 0) { error = "‘Grace’ can’t be negative."; return false; }
-        if (string.IsNullOrWhiteSpace(AbsenceTitle)) { error = "An expect rule needs an absence-alert title."; return false; }
+        if (string.IsNullOrWhiteSpace(AbsenceTitle)) { error = Loc.T("An expect rule needs an absence-alert title."); return false; }
         error = ""; return true;
     }
 

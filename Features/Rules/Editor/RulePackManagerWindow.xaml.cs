@@ -32,7 +32,7 @@ public partial class RulePackManagerWindow
         }
         catch (System.Exception ex)
         {
-            System.Windows.MessageBox.Show("Unexpected error: " + ex.Message);
+            System.Windows.MessageBox.Show(Loc.T("Unexpected error: ") + ex.Message);
         }
     }
 
@@ -65,7 +65,7 @@ public partial class RulePackManagerWindow
         var msgs = history.Query(topicId: ResolveTopicId(matcher.Topic), limit: 50, includeSuppressed: true);
         if (msgs.Count == 0)
         {
-            System.Windows.MessageBox.Show("No stored messages to pick from for this topic yet.");
+            System.Windows.MessageBox.Show(Loc.T("No stored messages to pick from for this topic yet."));
             return;
         }
 
@@ -96,7 +96,7 @@ public partial class RulePackManagerWindow
     {
         var report = _vm.Preview();
         if (report is null || _vm.SelectedPack is null) return;
-        var scope = $"{_vm.SelectedScopeTopic?.Name ?? "All topics"} · {_vm.SelectedScope?.Label ?? "All"}";
+        var scope = $"{_vm.SelectedScopeTopic?.Name ?? Loc.T("All topics")} · {_vm.SelectedScope?.Label ?? Loc.T("All")}";
         new RulePreviewWindow(report, _vm.SelectedPack.Name, scope) { Owner = this }.ShowDialog();
     }
 
@@ -109,12 +109,12 @@ public partial class RulePackManagerWindow
         var topic = _vm.SelectedScopeTopic?.Name ?? "all topics";
         var confirm = new Wpf.Ui.Controls.MessageBox
         {
-            Title = "Apply to history",
+            Title = Loc.T("Apply to history"),
             Content = $"Scanning {preview.Results.Count} stored message(s) for “{_vm.SelectedPack.Name}” ({topic}, " +
                       $"{_vm.SelectedScope?.Label ?? "All"}): this will hide {hidden} of them from the feed. " +
                       "This can’t be automatically undone. Apply?",
-            PrimaryButtonText = "Apply",
-            CloseButtonText = "Cancel",
+            PrimaryButtonText = Loc.T("Apply"),
+            CloseButtonText = Loc.T("Cancel"),
         };
         if (await confirm.ShowDialogAsync() != Wpf.Ui.Controls.MessageBoxResult.Primary) return;
 
@@ -123,10 +123,10 @@ public partial class RulePackManagerWindow
         {
             await new Wpf.Ui.Controls.MessageBox
             {
-                Title = "Applied",
+                Title = Loc.T("Applied"),
                 Content = $"Hid {o.HiddenCount} message(s) from the feed" +
                           (o.FoldedCount > 0 ? $" ({o.FoldedCount} folded with their problem)" : "") + ".",
-                CloseButtonText = "OK",
+                CloseButtonText = Loc.T("OK"),
             }.ShowDialogAsync();
         }
     }

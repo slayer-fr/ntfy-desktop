@@ -32,7 +32,7 @@ public sealed partial class PackViewModel : ObservableObject
 
     public bool TryValidate(out string error)
     {
-        if (string.IsNullOrWhiteSpace(Name)) { error = "The pack needs a name."; return false; }
+        if (string.IsNullOrWhiteSpace(Name)) { error = Loc.T("The pack needs a name."); return false; }
         foreach (var r in Rules)
             if (!r.TryValidate(out error)) { error = $"{r.Kind} rule: {error}"; return false; }
         error = ""; return true;
