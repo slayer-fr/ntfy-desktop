@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -97,8 +98,7 @@ public static partial class Loc
             if (d is Window w)
                 SetIfString(w, Window.TitleProperty);
 
-            if (d is ContentControl cc
-                && !(ItemsControl.ItemsControlFromItemContainer(cc)?.ItemsSource is not null))
+            if (d is ContentControl cc && !IsGeneratedForDataString(cc))
                 SetIfString(cc, ContentControl.ContentProperty);
 
             if (d is HeaderedContentControl hcc)
@@ -119,11 +119,23 @@ public static partial class Loc
         }
     }
 
-    // Only plain local string values: bindings (ReadLocalValue returns an expression) and
-    // inherited/styled values are skipped.
+    // A container generated for a data item (e.g. a ComboBoxItem showing a string from the view
+    // model) is translated at its source; an item that is its own container (NavigationViewItem) is not.
+    private static bool IsGeneratedForDataString(ContentControl cc)
+    {
+        var ic = ItemsControl.ItemsControlFromItemContainer(cc);
+        return ic?.ItemsSource is not null
+            && ic.ItemContainerGenerator.ItemFromContainer(cc) is string;
+    }
+
+    // Only plain string values set in XAML/code (locally or by a template); bindings,
+    // TemplateBindings, styles and inherited values are skipped.
     private static void SetIfString(DependencyObject d, DependencyProperty dp)
     {
-        if (d.ReadLocalValue(dp) is not string current || current.Length == 0) return;
+        var src = DependencyPropertyHelper.GetValueSource(d, dp);
+        if (src.IsExpression) return;
+        if (src.BaseValueSource is not (BaseValueSource.Local or BaseValueSource.ParentTemplate)) return;
+        if (d.GetValue(dp) is not string current || current.Length == 0) return;
 
         var t = T(current);
         if (t != current) d.SetValue(dp, t);
