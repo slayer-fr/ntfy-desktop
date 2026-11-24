@@ -85,10 +85,10 @@ public sealed record NtfyAction
         get
         {
             if (IsSupported) return null;
-            if (IsBroadcast) return "Broadcast actions are Android-only.";
-            if (IsView || IsHttp) return "This action has no valid http(s) URL.";
-            if (IsCopy) return "This action has nothing to copy.";
-            return "This action type isn't supported.";
+            if (IsBroadcast) return Loc.T("Broadcast actions are Android-only.");
+            if (IsView || IsHttp) return Loc.T("This action has no valid http(s) URL.");
+            if (IsCopy) return Loc.T("This action has nothing to copy.");
+            return Loc.T("This action type isn't supported.");
         }
     }
 }
